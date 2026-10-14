@@ -43,19 +43,20 @@ else()
         set(flatc_extra_flags "-fno-sanitize=thread")
     endif()
 
-    ov_native_compile_external_project(
-        TARGET_NAME host_flatc
-        NATIVE_INSTALL_DIR "${HOST_FLATC_INSTALL_DIR}"
-        EXTRA_COMPILE_FLAGS "${flatc_extra_flags}"
-        CMAKE_ARGS "-DFLATBUFFERS_BUILD_TESTS=${FLATBUFFERS_BUILD_TESTS}"
-                   "-DFLATBUFFERS_BUILD_FLATLIB=OFF"
-                   "-DFLATBUFFERS_BUILD_FLATC=ON"
-                   "-DFLATBUFFERS_BUILD_SHAREDLIB=OFF"
-                   "-DFLATBUFFERS_CPP_STD=${FLATBUFFERS_CPP_STD}"
-        NATIVE_SOURCE_SUBDIR "flatbuffers"
-        NATIVE_TARGETS flatc)
+    #ov_native_compile_external_project(
+    #    TARGET_NAME host_flatc
+    #    NATIVE_INSTALL_DIR "${HOST_FLATC_INSTALL_DIR}"
+    #    EXTRA_COMPILE_FLAGS "${flatc_extra_flags}"
+    #    CMAKE_ARGS "-DFLATBUFFERS_BUILD_TESTS=${FLATBUFFERS_BUILD_TESTS}"
+    #               "-DFLATBUFFERS_BUILD_FLATLIB=OFF"
+    #               "-DFLATBUFFERS_BUILD_FLATC=ON"
+    #               "-DFLATBUFFERS_BUILD_SHAREDLIB=OFF"
+    #               "-DFLATBUFFERS_CPP_STD=${FLATBUFFERS_CPP_STD}"
+    #    NATIVE_SOURCE_SUBDIR "flatbuffers"
+    #    NATIVE_TARGETS flatc)
+    add_custom_target(host_flatc DEPENDS ${Flatbuffers_FLATC_EXECUTABLE})
 
-    set(flatbuffers_COMPILER "${HOST_FLATC_INSTALL_DIR}/bin/flatc")
+    set(flatbuffers_COMPILER "${Flatbuffers_FLATC_EXECUTABLE}")
     add_executable(flatbuffers::flatc IMPORTED GLOBAL)
     set_property(TARGET flatbuffers::flatc APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
     set_target_properties(flatbuffers::flatc PROPERTIES
